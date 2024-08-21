@@ -7,26 +7,26 @@ func TestHello_World(t *testing.T) {
 		got := Hello()
 		want := "Hello, World!"
 
-		if got != want {
-			t.Errorf("got %q want %q", got, want)
-		}
+		assertCorrectMessage(t, got, want)
 	})
 
 	t.Run("saying hello to Guilherme", func(t *testing.T) {
 		got := Hello("Guilherme")
-		want := "Hello, Guilherme!"
+		want := "Hello, Guilhermee!"
 
-		if got != want {
-			t.Errorf("got %q want %q", got, want)
-		}
+		assertCorrectMessage(t, got, want)
 	})
 
 	t.Run("saying hello to Guilherme Teixeira", func(t *testing.T) {
 		got := Hello("Guilherme", "Teixeira")
 		want := "Hello, Guilherme Teixeira!"
-
-		if got != want {
-			t.Errorf("got %q want %q", got, want)
-		}
+		assertCorrectMessage(t, got, want)
 	})
+}
+
+func assertCorrectMessage(t *testing.T, got, want string) {
+	t.Helper()
+	if got != want {
+		t.Errorf("got %q want %q", got, want)
+	}
 }
