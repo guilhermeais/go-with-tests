@@ -15,7 +15,31 @@ func TestSumAll(t *testing.T) {
 }
 
 func BenchmarkSumAll(b *testing.B) {
+	numbersToSum := [][]int{
+		{1, 2},
+		{0, 9},
+		{1, 2},
+		{0, 9},
+		{1, 2},
+		{0, 9},
+	}
 	for i := 0; i < b.N; i++ {
-		SumAll([]int{1, 2}, []int{0, 9})
+		SumAll(numbersToSum...)
 	}
 }
+
+func BenchmarkSumAllWithDynamicCap(b *testing.B) {
+	numbersToSum := [][]int{
+		{1, 2},
+		{0, 9},
+		{1, 2},
+		{0, 9},
+		{1, 2},
+		{0, 9},
+	}
+	for i := 0; i < b.N; i++ {
+		SumAllWithDynamicCap(numbersToSum...)
+	}
+}
+
+// func a() {}
