@@ -1,6 +1,9 @@
 package geometry
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestPerimeter(t *testing.T) {
 	rectangle := Rectangle{10.0, 10.0}
@@ -18,18 +21,19 @@ func TestArea(t *testing.T) {
 		got := shape.Area()
 
 		if got != want {
-			t.Errorf("%#v got %.2f want %.2f", shape, got, want)
+			t.Errorf("%s got %.2f want %.2f", reflect.TypeOf(shape).Name(), got, want)
 		}
 	}
 
-	t.Run("rectangles", func(t *testing.T) {
-		rectangle := Rectangle{12.0, 6.0}
-		checkArea(t, rectangle, 72.0)
-	})
+	shapesToTest := []struct {
+		shape Shape
+		want  float64
+	}{
+		{Rectangle{12.0, 6.0}, 72.0},
+		{Circle{12.0}, 452.3893421169302},
+	}
 
-	t.Run("circles", func(t *testing.T) {
-		circle := Circle{12.0}
-		want := 452.3893421169302
-		checkArea(t, circle, want)
-	})
+	for _, testCase := range shapesToTest {
+		checkArea(t, testCase.shape, testCase.want)
+	}
 }
