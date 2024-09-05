@@ -3,22 +3,26 @@ package dictionary
 import "testing"
 
 func TestSearch(t *testing.T) {
-	t.Run("existing key", func(t *testing.T) {
+	t.Run("known word", func(t *testing.T) {
 		dictionary := Dictionary{"test": "this is just a test"}
 
-		got := dictionary.Search("test")
+		got, _ := dictionary.Search("test")
 		want := "this is just a test"
 
 		assertStrings(t, got, want)
 	})
 
-	t.Run("non existing key", func(t *testing.T) {
+	t.Run("unknown word", func(t *testing.T) {
 		dictionary := Dictionary{}
 
-		got := dictionary.Search("unexisting")
-		want := ""
+		_, err := dictionary.Search("unknown")
+		want := "could not find the word \"unknown\""
 
-		assertStrings(t, got, want)
+		if err == nil {
+			t.Fatal("expected to get an error")
+		}
+
+		assertStrings(t, err.Error(), want)
 	})
 }
 
