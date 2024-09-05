@@ -4,16 +4,15 @@ import (
 	"fmt"
 )
 
-type ErrWordNotFound struct {
+type DictionaryError struct {
 	word string
 }
+
+type ErrWordNotFound DictionaryError
+type ErrWordExists DictionaryError
 
 func (err ErrWordNotFound) Error() string {
 	return fmt.Sprintf("could not find the word %q", err.word)
-}
-
-type ErrWordExists struct {
-	word string
 }
 
 func (err ErrWordExists) Error() string {
