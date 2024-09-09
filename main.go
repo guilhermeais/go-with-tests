@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func dependencyInjectionExample() {
@@ -13,7 +14,8 @@ func dependencyInjectionExample() {
 }
 
 func countdownExample() {
-	counter.Countdown(os.Stdout, &counter.DefaultSleeper{})
+	sleeper := counter.MakeConfigurableSleeper(1*time.Second, time.Sleep)
+	counter.Countdown(os.Stdout, sleeper)
 }
 func main() {
 	go dependencyInjectionExample()
