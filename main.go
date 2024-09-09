@@ -13,7 +13,7 @@ func dependencyInjectionExample() {
 }
 
 func countdownExample() {
-	counter.Countdown(os.Stdout)
+	counter.Countdown(os.Stdout, &counter.DefaultSleeper{})
 }
 func main() {
 	go dependencyInjectionExample()
