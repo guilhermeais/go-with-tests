@@ -6,7 +6,7 @@ import (
 )
 
 func Racer(urls ...string) (winner string) {
-	var fastest time.Duration = 0
+	var fastest time.Duration
 	for i, url := range urls {
 		start := time.Now()
 		http.Get(url)
