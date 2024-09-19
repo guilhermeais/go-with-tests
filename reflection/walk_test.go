@@ -142,13 +142,30 @@ func TestWal(t *testing.T) {
 			t.Errorf("got %v, want %v", got, want)
 		}
 	})
+
+	t.Run("with funciton", func(t *testing.T) {
+		aFunction := func() (Profile, Profile) {
+			return Profile{33, "São Paulo"}, Profile{40, "Franca"}
+		}
+
+		var got []string
+		want := []string{"São Paulo", "Franca"}
+
+		walk(aFunction, func(input string) {
+			got = append(got, input)
+		})
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v, want %v", got, want)
+		}
+	})
 }
 
 func assertContains(t testing.TB, got []string, expected string) {
 	t.Helper()
 
-	verify := func(array []string, value string) bool {
-		for _, value := range got {
+	verify := func(array []string, expected string) bool {
+		for _, value := range array {
 			if value == expected {
 				return true
 			}
