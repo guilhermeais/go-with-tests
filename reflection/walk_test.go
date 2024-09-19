@@ -87,14 +87,6 @@ func TestWal(t *testing.T) {
 			},
 			ExpectedCalls: []string{"London", "São Paulo"},
 		},
-		{
-			Name: "struct with maps",
-			Input: map[string]string{
-				"Cow":   "Moo",
-				"Sheep": "Baa",
-			},
-			ExpectedCalls: []string{"Moo", "Baa"},
-		},
 	}
 
 	for i, test := range cases {
@@ -113,5 +105,40 @@ func TestWal(t *testing.T) {
 				t.Errorf("got %v, want %v", got, test.ExpectedCalls)
 			}
 		})
+	}
+	t.Run("struct with maps", func(t *testing.T) {
+		var got []string = []string{}
+		aMap := map[string]string{
+			"Cow":   "Moo",
+			"Sheep": "Baa",
+		}
+
+		walk(aMap, func(input string) {
+			got = append(got, input)
+		})
+
+		assertContains(t, got, "Moo")
+		assertContains(t, got, "Baa")
+
+	})
+}
+
+func assertContains(t testing.TB, got []string, expected string) {
+	t.Helper()
+
+	verify := func(array []string, value string) bool {
+		for _, value := range got {
+			if value == expected {
+				return true
+			}
+		}
+
+		return false
+	}
+
+	contains := verify(got, expected)
+
+	if !contains {
+		t.Errorf("expected %v to contain %q but it didn't", got, expected)
 	}
 }
