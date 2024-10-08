@@ -1,6 +1,8 @@
 package romannumerals
 
-import "strings"
+import (
+	"strings"
+)
 
 type RomanNumeral struct {
 	Value  int
