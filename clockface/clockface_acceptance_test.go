@@ -57,6 +57,31 @@ func TestSVGWriterSecondHand(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSVGWriterMinuteHand(t *testing.T) {
+	cases := []struct {
+		time time.Time
+		line Line
+	}{
+		{simpleTime(0, 0, 0), Line{150, 150, 150, 70}},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			xmlBuffer := bytes.Buffer{}
+			clockface.SVGWriter(&xmlBuffer, c.time)
+
+			svg := SVG{}
+			xml.Unmarshal(xmlBuffer.Bytes(), &svg)
+
+			want := c.line
+
+			if !containsLine(svg, want) {
+				t.Errorf("Expect to find the minute hand line %+v, in the SVG lines %+v", want, svg.Line)
+			}
+		})
+	}
 
 }
 
