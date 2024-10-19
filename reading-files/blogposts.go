@@ -6,10 +6,6 @@ import (
 	"strings"
 )
 
-type Post struct {
-	Title string
-}
-
 func PostsFromFS(fileSystem fs.FS) []Post {
 	dir, err := fs.ReadDir(fileSystem, ".")
 	posts := []Post{}
