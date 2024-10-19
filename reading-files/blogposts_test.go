@@ -4,30 +4,32 @@ import (
 	"errors"
 	"io/fs"
 	blogposts "reading-files"
+	"reflect"
 	"testing"
 	"testing/fstest"
 )
 
 func TestPostsFromFS(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
-		fs := fstest.MapFS{
-			"1-hello-world.md": {Data: []byte("Title: Hello, TDD world!\nDescription: First post on our wonderful blog")},
+		fileSystem := fstest.MapFS{
+			"1-hello-world.md": {Data: []byte("Title: Hello, TDD world!\nDescription: First post on our wonderful blog\nTags: tdd, go")},
 			"hello-twitch.md":  {Data: []byte("Title: Hello, twitchy world!")},
 		}
 
-		posts, err := blogposts.PostsFromFS(fs)
+		posts, err := blogposts.PostsFromFS(fileSystem)
 
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		if len(posts) != len(fs) {
-			t.Errorf("expected %d posts, got %d posts", len(fs), len(posts))
+		if len(posts) != len(fileSystem) {
+			t.Errorf("expected %d posts, got %d posts", len(fileSystem), len(posts))
 		}
 
 		expectedFirstPost := blogposts.Post{
 			Title:       "Hello, TDD world!",
 			Description: "First post on our wonderful blog",
+			Tags:        []string{"tdd", "go"},
 		}
 
 		assertPost(t, posts[0], expectedFirstPost)
@@ -45,7 +47,7 @@ func TestPostsFromFS(t *testing.T) {
 func assertPost(t *testing.T, got, want blogposts.Post) {
 	t.Helper()
 
-	if got != want {
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %#v, want %#v", got, want)
 	}
 }

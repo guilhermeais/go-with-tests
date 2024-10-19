@@ -41,9 +41,11 @@ func newPost(blogReader io.Reader) Post {
 
 	title := readLine(TITLE_PREFIX)
 	description := readLine(DESCRIPTION_PREFIX)
+	tags := strings.Split(readLine("Tags: "), ", ")
 
 	return Post{
 		Title:       title,
 		Description: description,
+		Tags:        tags,
 	}
 }
