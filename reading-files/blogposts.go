@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/fs"
 	"strings"
+	"time"
 )
 
 const (
@@ -45,12 +46,16 @@ func newPost(blogReader io.Reader) Post {
 	title := readLine(TITLE_PREFIX)
 	description := readLine(DESCRIPTION_PREFIX)
 	tags := strings.Split(readLine(TAG_PREFIX), ", ")
+	dateStr := readLine("Date: ")
+	date, _ := time.Parse("2006-01-02", dateStr)
+
 	body := readBody(scanner)
 	return Post{
 		Title:       title,
 		Description: description,
 		Tags:        tags,
 		Body:        body,
+		Date:        date,
 	}
 }
 

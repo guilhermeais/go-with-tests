@@ -7,12 +7,13 @@ import (
 	"reflect"
 	"testing"
 	"testing/fstest"
+	"time"
 )
 
 func TestPostsFromFS(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 		fileSystem := fstest.MapFS{
-			"1-hello-world.md": {Data: []byte("Title: Hello, TDD world!\nDescription: First post on our wonderful blog\nTags: tdd, go\n---\nHello world!")},
+			"1-hello-world.md": {Data: []byte("Title: Hello, TDD world!\nDescription: First post on our wonderful blog\nTags: tdd, go\nDate: 2022-08-26\n---\nHello world!")},
 			"hello-twitch.md":  {Data: []byte("Title: Hello, twitchy world!")},
 		}
 
@@ -31,6 +32,7 @@ func TestPostsFromFS(t *testing.T) {
 			Description: "First post on our wonderful blog",
 			Tags:        []string{"tdd", "go"},
 			Body:        "Hello world!",
+			Date:        time.Date(2022, 8, 26, 0, 0, 0, 0, time.UTC),
 		}
 
 		assertPost(t, posts[0], expectedFirstPost)
