@@ -12,7 +12,7 @@ import (
 func TestPostsFromFS(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 		fileSystem := fstest.MapFS{
-			"1-hello-world.md": {Data: []byte("Title: Hello, TDD world!\nDescription: First post on our wonderful blog\nTags: tdd, go")},
+			"1-hello-world.md": {Data: []byte("Title: Hello, TDD world!\nDescription: First post on our wonderful blog\nTags: tdd, go\n---\nHello world!")},
 			"hello-twitch.md":  {Data: []byte("Title: Hello, twitchy world!")},
 		}
 
@@ -30,6 +30,7 @@ func TestPostsFromFS(t *testing.T) {
 			Title:       "Hello, TDD world!",
 			Description: "First post on our wonderful blog",
 			Tags:        []string{"tdd", "go"},
+			Body:        "Hello world!",
 		}
 
 		assertPost(t, posts[0], expectedFirstPost)

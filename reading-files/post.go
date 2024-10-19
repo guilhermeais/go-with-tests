@@ -1,6 +1,6 @@
 package blogposts
 
 type Post struct {
-	Title, Description string
-	Tags               []string
+	Title, Description, Body string
+	Tags                     []string
 }
