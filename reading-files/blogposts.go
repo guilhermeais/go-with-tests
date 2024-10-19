@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"sort"
 	"strings"
 	"time"
 )
@@ -26,6 +27,12 @@ func PostsFromFS(fileSystem fs.FS) ([]Post, error) {
 	for _, file := range dir {
 		posts = append(posts, makePostFromFile(fileSystem, file.Name()))
 	}
+
+	sort.Slice(posts, func(i, j int) bool {
+		a := posts[i]
+		b := posts[j]
+		return a.Date.Before(b.Date)
+	})
 
 	return posts, nil
 }
