@@ -84,30 +84,30 @@ func TestSVGWriterMinuteHand(t *testing.T) {
 	}
 }
 
-// func TestSVGWriterHourHand(t *testing.T) {
-// 	cases := []struct {
-// 		time time.Time
-// 		line Line
-// 	}{
-// 		{simpleTime(6, 0, 0), Line{150, 150, 150, 200}},
-// 	}
+func TestSVGWriterHourHand(t *testing.T) {
+	cases := []struct {
+		time time.Time
+		line Line
+	}{
+		{simpleTime(6, 0, 0), Line{150, 150, 150, 200}},
+	}
 
-// 	for _, c := range cases {
-// 		t.Run(testName(c.time), func(t *testing.T) {
-// 			xmlBuffer := bytes.Buffer{}
-// 			clockface.SVGWriter(&xmlBuffer, c.time)
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			xmlBuffer := bytes.Buffer{}
+			clockface.SVGWriter(&xmlBuffer, c.time)
 
-// 			svg := SVG{}
-// 			xml.Unmarshal(xmlBuffer.Bytes(), &svg)
+			svg := SVG{}
+			xml.Unmarshal(xmlBuffer.Bytes(), &svg)
 
-// 			want := c.line
+			want := c.line
 
-// 			if !containsLine(svg, want) {
-// 				t.Errorf("Expect to find the minute hand line %+v, in the SVG lines %+v", want, svg.Line)
-// 			}
-// 		})
-// 	}
-// }
+			if !containsLine(svg, want) {
+				t.Errorf("Expect to find the minute hand line %+v, in the SVG lines %+v", want, svg.Line)
+			}
+		})
+	}
+}
 
 func containsLine(svg SVG, want Line) bool {
 	for _, line := range svg.Line {
