@@ -8,10 +8,10 @@ import (
 	"testing/fstest"
 )
 
-func TestBlogPosts(t *testing.T) {
+func TestPostsFromFS(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 		fs := fstest.MapFS{
-			"1-hello-world.md": {Data: []byte("Title: Hello, TDD world!")},
+			"1-hello-world.md": {Data: []byte("Title: Hello, TDD world!\nDescription: First post on our wonderful blog")},
 			"hello-twitch.md":  {Data: []byte("Title: Hello, twitchy world!")},
 		}
 
@@ -25,7 +25,11 @@ func TestBlogPosts(t *testing.T) {
 			t.Errorf("expected %d posts, got %d posts", len(fs), len(posts))
 		}
 
-		expectedFirstPost := blogposts.Post{Title: "Hello, TDD world!"}
+		expectedFirstPost := blogposts.Post{
+			Title:       "Hello, TDD world!",
+			Description: "First post on our wonderful blog",
+		}
+
 		if posts[0] != expectedFirstPost {
 			t.Errorf("got %#v, want %#v", posts[0], expectedFirstPost)
 		}
@@ -43,7 +47,6 @@ func TestBlogPosts(t *testing.T) {
 type FailingFS struct {
 }
 
-// Open implements fs.FS.
 func (f FailingFS) Open(name string) (fs.File, error) {
 	return nil, errors.New("i've failed")
 }

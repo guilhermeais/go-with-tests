@@ -1,6 +1,7 @@
 package blogposts
 
 import (
+	"bufio"
 	"io"
 	"io/fs"
 	"strings"
@@ -26,8 +27,16 @@ func makePostFromFile(fileSystem fs.FS, filename string) Post {
 }
 
 func newPost(blogReader io.Reader) Post {
-	fileContents, _ := io.ReadAll(blogReader)
+	scanner := bufio.NewScanner(blogReader)
 
-	title := strings.TrimPrefix(string(fileContents), "Title: ")
-	return Post{Title: title}
+	scanner.Scan()
+	title := strings.TrimPrefix(scanner.Text(), "Title: ")
+
+	scanner.Scan()
+	description := strings.TrimPrefix(scanner.Text(), "Description: ")
+
+	return Post{
+		Title:       title,
+		Description: description,
+	}
 }

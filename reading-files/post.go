@@ -1,5 +1,5 @@
 package blogposts
 
 type Post struct {
-	Title string
+	Title, Description string
 }
