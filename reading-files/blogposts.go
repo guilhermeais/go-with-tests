@@ -7,6 +7,11 @@ import (
 	"strings"
 )
 
+const (
+	TITLE_PREFIX       = "Title: "
+	DESCRIPTION_PREFIX = "Description: "
+)
+
 func PostsFromFS(fileSystem fs.FS) ([]Post, error) {
 	dir, err := fs.ReadDir(fileSystem, ".")
 	if err != nil {
@@ -29,11 +34,13 @@ func makePostFromFile(fileSystem fs.FS, filename string) Post {
 func newPost(blogReader io.Reader) Post {
 	scanner := bufio.NewScanner(blogReader)
 
-	scanner.Scan()
-	title := strings.TrimPrefix(scanner.Text(), "Title: ")
+	readLine := func(prefix string) string {
+		scanner.Scan()
+		return strings.TrimPrefix(scanner.Text(), prefix)
+	}
 
-	scanner.Scan()
-	description := strings.TrimPrefix(scanner.Text(), "Description: ")
+	title := readLine(TITLE_PREFIX)
+	description := readLine(DESCRIPTION_PREFIX)
 
 	return Post{
 		Title:       title,
