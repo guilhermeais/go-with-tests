@@ -10,6 +10,7 @@ import (
 const (
 	TITLE_PREFIX       = "Title: "
 	DESCRIPTION_PREFIX = "Description: "
+	TAG_PREFIX         = "Tags: "
 )
 
 func PostsFromFS(fileSystem fs.FS) ([]Post, error) {
@@ -41,7 +42,7 @@ func newPost(blogReader io.Reader) Post {
 
 	title := readLine(TITLE_PREFIX)
 	description := readLine(DESCRIPTION_PREFIX)
-	tags := strings.Split(readLine("Tags: "), ", ")
+	tags := strings.Split(readLine(TAG_PREFIX), ", ")
 
 	return Post{
 		Title:       title,
