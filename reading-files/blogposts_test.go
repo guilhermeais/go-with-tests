@@ -30,9 +30,7 @@ func TestPostsFromFS(t *testing.T) {
 			Description: "First post on our wonderful blog",
 		}
 
-		if posts[0] != expectedFirstPost {
-			t.Errorf("got %#v, want %#v", posts[0], expectedFirstPost)
-		}
+		assertPost(t, posts[0], expectedFirstPost)
 	})
 
 	t.Run("failing filesystem", func(t *testing.T) {
@@ -44,9 +42,17 @@ func TestPostsFromFS(t *testing.T) {
 	})
 }
 
+func assertPost(t *testing.T, got, want blogposts.Post) {
+	t.Helper()
+
+	if got != want {
+		t.Errorf("got %#v, want %#v", got, want)
+	}
+}
+
 type FailingFS struct {
 }
 
-func (f FailingFS) Open(name string) (fs.File, error) {
+func (f FailingFS) Open(_ string) (fs.File, error) {
 	return nil, errors.New("i've failed")
 }
