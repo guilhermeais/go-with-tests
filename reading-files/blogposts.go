@@ -2,12 +2,11 @@ package blogposts
 
 import (
 	"io/fs"
-	"testing/fstest"
 )
 
 type Post struct{}
 
-func PostsFromFS(fileSysten fstest.MapFS) []Post {
+func PostsFromFS(fileSysten fs.FS) []Post {
 	dir, err := fs.ReadDir(fileSysten, ".")
 	posts := []Post{}
 	if err == nil {
