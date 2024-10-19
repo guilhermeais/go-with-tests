@@ -6,17 +6,18 @@ import (
 	"strings"
 )
 
-func PostsFromFS(fileSystem fs.FS) []Post {
+func PostsFromFS(fileSystem fs.FS) ([]Post, error) {
 	dir, err := fs.ReadDir(fileSystem, ".")
-	posts := []Post{}
-	if err == nil {
-		for _, file := range dir {
-			posts = append(posts, makePostFromFile(fileSystem, file.Name()))
-		}
-
-		return posts
+	if err != nil {
+		return nil, err
 	}
-	return nil
+
+	posts := []Post{}
+	for _, file := range dir {
+		posts = append(posts, makePostFromFile(fileSystem, file.Name()))
+	}
+
+	return posts, nil
 }
 
 func makePostFromFile(fileSystem fs.FS, filename string) Post {
